@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#0D1117"
+    android:padding="16dp">
+
+    <!-- Header -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="CLEANBOT PRO"
+        android:textColor="#58A6FF"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:gravity="center" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Autonomous Cleaning Control"
+        android:textColor="#8B949E"
+        android:textSize="12sp"
+        android:gravity="center"
+        android:layout_marginBottom="12dp" />
+
+    <!-- Bluetooth Connection Bar -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="#161B22"
+        android:padding="10dp"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="12dp">
+
+        <TextView
+            android:id="@+id/tvStatus"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="● Déconnecté"
+            android:textColor="#F85149"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btnConnect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CONNECTER HC-05"
+            android:textSize="12sp"
+            android:backgroundTint="#21262D"
+            android:textColor="#58A6FF" />
+    </LinearLayout>
+
+    <!-- BIG ACTION 1: START AUTO CLEAN -->
+    <Button
+        android:id="@+id/btnStartAuto"
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:text="▶ DEMARRER NETTOYAGE AUTO"
+        android:textSize="17sp"
+        android:textStyle="bold"
+        android:backgroundTint="#238636"
+        android:textColor="#FFFFFF"
+        android:layout_marginBottom="10dp" />
+
+    <!-- BIG ACTION 2: ARRET D'URGENCE -->
+    <Button
+        android:id="@+id/btnEmergencyStop"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:text="🛑 ARRET D'URGENCE"
+        android:textSize="17sp"
+        android:textStyle="bold"
+        android:backgroundTint="#DA3633"
+        android:textColor="#FFFFFF"
+        android:layout_marginBottom="12dp" />
+
+    <!-- Cleaning Modes Row -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="MODES DE NETTOYAGE :"
+        android:textColor="#8B949E"
+        android:textSize="11sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="4dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="10dp">
+
+        <Button
+            android:id="@+id/btnModeRows"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Lignes (1)"
+            android:textSize="11sp"
+            android:backgroundTint="#1F6FEB"
+            android:textColor="#FFFFFF"
+            android:layout_marginEnd="4dp" />
+
+        <Button
+            android:id="@+id/btnModePerimeter"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Murs (2)"
+            android:textSize="11sp"
+            android:backgroundTint="#1F6FEB"
+            android:textColor="#FFFFFF"
+            android:layout_marginEnd="4dp" />
+
+        <Button
+            android:id="@+id/btnModeHybrid"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Hybride (3)"
+            android:textSize="11sp"
+            android:backgroundTint="#6E40C9"
+            android:textColor="#FFFFFF" />
+    </LinearLayout>
+
+    <!-- Manual Actuators Toggles Row -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="12dp">
+
+        <Button
+            android:id="@+id/btnToggleBrushes"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Brosses: OFF"
+            android:textSize="11sp"
+            android:backgroundTint="#30363D"
+            android:textColor="#FFFFFF"
+            android:layout_marginEnd="6dp" />
+
+        <Button
+            android:id="@+id/btnToggleVent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Suction: OFF"
+            android:textSize="11sp"
+            android:backgroundTint="#30363D"
+            android:textColor="#FFFFFF" />
+    </LinearLayout>
+
+    <!-- Live Telemetry Console -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TELEMETRIE CAPTEURS EN DIRECT :"
+        android:textColor="#8B949E"
+        android:textSize="11sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="4dp" />
+
+    <ScrollView
+        android:id="@+id/scrollLog"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="#161B22"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/tvLog"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:text="Prêt. Connectez le Bluetooth pour démarrer.\n"
+            android:textColor="#3FB950"
+            android:textSize="11sp" />
+    </ScrollView>
+
+</LinearLayout>

@@ -27,22 +27,29 @@ jobs:
       with:
         gradle-version: '8.4'
 
-    - name: Build Debug APK
-      run: gradle assembleDebug --stacktrace
+    - name: Generate Release Keystore
+      run: |
+        keytool -genkey -v -keystore release.keystore -alias cleanbot -keyalg RSA -keysize 2048 -validity 10000 -storepass cleanbot123 -keypass cleanbot123 -dname "CN=CleanBot, OU=Engineering, O=CleanBot, L=Paris, ST=IDF, C=FR"
+
+    - name: Build Release APK
+      run: gradle assembleRelease --stacktrace
+
+    - name: Rename APK
+      run: cp app/build/outputs/apk/release/app-release.apk CleanBot_Pro.apk
 
     - name: Upload APK Artifact
       uses: actions/upload-artifact@v4
       with:
-        name: CleanBot-Pro
-        path: app/build/outputs/apk/debug/app-debug.apk
+        name: CleanBot-Pro-Release
+        path: CleanBot_Pro.apk
 
     - name: Create Release & Upload APK
       uses: softprops/action-gh-release@v2
       if: startsWith(github.ref, 'refs/heads/main')
       with:
-        tag_name: v1.0
-        name: "CleanBot Pro v1.0"
-        body: "Official standalone Android app for CleanBot (Autonomous Robot Cleaner). Optimized for Samsung Galaxy with direct HC-05 support."
-        files: app/build/outputs/apk/debug/app-debug.apk
+        tag_name: v1.1
+        name: "CleanBot Pro v1.1 (Signed Release)"
+        body: "Official signed release of CleanBot Pro. Valid package certificate for Samsung Galaxy One UI."
+        files: CleanBot_Pro.apk
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

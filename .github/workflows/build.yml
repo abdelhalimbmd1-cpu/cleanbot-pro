@@ -47,9 +47,9 @@ jobs:
       uses: softprops/action-gh-release@v2
       if: startsWith(github.ref, 'refs/heads/main')
       with:
-        tag_name: v1.1
-        name: "CleanBot Pro v1.1 (Signed Release)"
-        body: "Official signed release of CleanBot Pro. Valid package certificate for Samsung Galaxy One UI."
+        tag_name: v1.2
+        name: "CleanBot Pro v1.2 (Channel 1 Direct RFCOMM)"
+        body: "CleanBot Pro v1.2: Direct Channel 1 RFCOMM connection bypasses SDP query timeouts on clone HC-05 chips."
         files: CleanBot_Pro.apk
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

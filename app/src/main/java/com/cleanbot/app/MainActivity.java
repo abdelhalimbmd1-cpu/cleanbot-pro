@@ -161,15 +161,11 @@ public class MainActivity extends AppCompatActivity {
 
         List<BluetoothDevice> deviceList = new ArrayList<>(pairedDevices);
         String[] names = new String[deviceList.size()];
-        int defaultIndex = -1;
 
         for (int i = 0; i < deviceList.size(); i++) {
             BluetoothDevice dev = deviceList.get(i);
             String name = dev.getName();
             names[i] = (name != null ? name : "Inconnu") + "\n" + dev.getAddress();
-            if (name != null && name.contains("HC-05")) {
-                defaultIndex = i;
-            }
         }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -189,20 +185,41 @@ public class MainActivity extends AppCompatActivity {
                     try { bluetoothSocket.close(); } catch (Exception ignored) {}
                 }
 
-                // Safe Samsung Insecure Socket Connection (Bypasses Error 507)
-                try {
-                    Method m = device.getClass().getMethod("createInsecureRfcommSocketToServiceRecord", UUID.class);
-                    bluetoothSocket = (BluetoothSocket) m.invoke(device, SPP_UUID);
-                } catch (Exception e) {
-                    bluetoothSocket = device.createRfcommSocketToServiceRecord(SPP_UUID);
-                }
-
                 if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.BLUETOOTH_SCAN) == PackageManager.PERMISSION_GRANTED ||
                         Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
                     bluetoothAdapter.cancelDiscovery();
                 }
 
-                bluetoothSocket.connect();
+                // 3-Tier Direct Connection (Bypasses SDP timeout completely)
+                BluetoothSocket socket = null;
+                boolean connected = false;
+
+                // Attempt 1: Direct Channel 1 RFCOMM (What Serial Bluetooth Terminal uses!)
+                try {
+                    Method m = device.getClass().getMethod("createRfcommSocket", int.class);
+                    socket = (BluetoothSocket) m.invoke(device, 1);
+                    socket.connect();
+                    connected = true;
+                } catch (Exception e1) {
+                    // Attempt 2: Insecure Service Record
+                    try {
+                        Method m = device.getClass().getMethod("createInsecureRfcommSocketToServiceRecord", UUID.class);
+                        socket = (BluetoothSocket) m.invoke(device, SPP_UUID);
+                        socket.connect();
+                        connected = true;
+                    } catch (Exception e2) {
+                        // Attempt 3: Standard SPP UUID
+                        socket = device.createRfcommSocketToServiceRecord(SPP_UUID);
+                        socket.connect();
+                        connected = true;
+                    }
+                }
+
+                if (!connected || socket == null) {
+                    throw new IOException("Échec de connexion sur tous les canaux RFCOMM");
+                }
+
+                bluetoothSocket = socket;
                 outputStream = bluetoothSocket.getOutputStream();
                 inputStream = bluetoothSocket.getInputStream();
                 isConnected = true;
